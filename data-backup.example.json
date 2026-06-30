@@ -1,0 +1,12 @@
+{
+  "appName": "HabitFlow",
+  "backupVersion": 1,
+  "appVersion": "local",
+  "exportedAt": null,
+  "timezone": null,
+  "source": "example",
+  "data": {},
+  "meta": {
+    "note": "This is an example backup structure. Real backups are exported manually or synced to Google Sheets."
+  }
+}
