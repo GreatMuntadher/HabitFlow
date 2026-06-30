@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#7c3aed">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>HabitFlow — لوحة الحياة</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="app-loading">
+
+<!-- خلفية الفضاء -->
+<div id="space-scene" aria-hidden="true">
+  <div class="space-stars-far"    id="stars-sm"></div>
+  <div class="space-stars-near"   id="stars-md"></div>
+  <div class="space-stars-bright" id="stars-lg"></div>
+  <div class="space-nebula"></div>
+  <div class="meteor m1"></div>
+  <div class="meteor m2"></div>
+  <div class="meteor m3"></div>
+  <div class="meteor m4"></div>
+  <div class="meteor m5"></div>
+</div>
+
+<div class="app-wrapper">
+
+  <!-- الشريط الجانبي -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="url(#lg)"/><path d="M8 16.5L13 21.5L24 10.5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="lg" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#7c3aed"/><stop offset="1" stop-color="#4f46e5"/></linearGradient></defs></svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-name">HabitFlow</span>
+        <span class="logo-sub">لوحة الحياة</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-item active" data-page="dashboard" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/></svg>
+        <span>لوحة التحكم</span>
+      </a>
+      <a class="nav-item" data-page="daily" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 9h18M8 2v4M16 2v4M7 13h4M7 17h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>تسجيل اليوم</span>
+      </a>
+      <a class="nav-item" data-page="tasks" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>مهام اليوم</span>
+      </a>
+      <a class="nav-item" data-page="calendar" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 9h18M8 2v4M16 2v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="14" r="1" fill="currentColor"/><circle cx="12" cy="14" r="1" fill="currentColor"/><circle cx="16" cy="14" r="1" fill="currentColor"/></svg>
+        <span>التقويم</span>
+      </a>
+      <a class="nav-item" data-page="challenges" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <span>التحديات</span>
+      </a>
+      <a class="nav-item" data-page="timeline" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M2 12h20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="6" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="1.4"/><circle cx="13" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="1.4"/><circle cx="20" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="1.4"/><path d="M6 12v-5M13 12v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span>الخط الزمني</span>
+      </a>
+      <a class="nav-item" data-page="achievements" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M12 15l-4.5 2.5 1.2-5L4.5 9l5.1-.5L12 4l2.4 4.5 5.1.5-4.2 3.5 1.2 5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <span>الإنجازات</span>
+      </a>
+      <a class="nav-item" data-page="journal" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M8 7h8M8 11h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>المذكرات</span>
+      </a>
+
+      <div class="nav-divider"></div>
+
+      <a class="nav-item" data-page="categories" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 3v9l6 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>الجوانب</span>
+      </a>
+      <a class="nav-item" data-page="reports" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M4 20V14M8 20V10M12 20V6M16 20V12M20 20V8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>التقارير</span>
+      </a>
+      <a class="nav-item" data-page="manage" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>إدارة العادات</span>
+      </a>
+      <a class="nav-item" data-page="settings" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.8 2.2 2.8-.3.9 2.7 2.5 1.3-1.1 2.6 1.1 2.6-2.5 1.3-.9 2.7-2.8-.3L12 21l-1.8-2.2-2.8.3-.9-2.7-2.5-1.3 1.1-2.6-1.1-2.6 2.5-1.3.9-2.7 2.8.3L12 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
+        <span>الإعدادات</span>
+      </a>
+    </nav>
+
+    <div id="sidebar-account-slot" class="sidebar-account-slot"></div>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-date" id="sidebar-date"></div>
+      <div class="sidebar-time" id="sidebar-time"></div>
+    </div>
+  </aside>
+
+  <!-- المحتوى الرئيسي -->
+  <main class="main-content">
+
+    <!-- لوحة التحكم -->
+    <section class="page active" id="page-dashboard">
+      <div class="page-header">
+        <div class="page-title-block">
+          <h1 class="page-title">لوحة التحكم</h1>
+          <p class="page-subtitle" id="dashboard-date-label"></p>
+        </div>
+      </div>
+      <div id="dashboard-content"></div>
+    </section>
+
+    <!-- تسجيل اليوم -->
+    <section class="page" id="page-daily">
+      <div class="page-header">
+        <div class="page-title-block">
+          <h1 class="page-title">تسجيل اليوم</h1>
+          <p class="page-subtitle">تابع عاداتك يوماً بيوم</p>
+        </div>
+        <div class="page-actions">
+          <input type="date" class="date-picker" id="daily-date-picker">
+        </div>
+      </div>
+      <div id="daily-content"></div>
+    </section>
+
+    <!-- مهام اليوم -->
+    <section class="page" id="page-tasks">
+      <div class="page-header">
+        <div class="page-title-block">
+          <h1 class="page-title">مهام اليوم</h1>
+          <p class="page-subtitle">مهام مرنة مستقلة عن عاداتك اليومية</p>
+        </div>
+        <div class="page-actions">
+          <input type="date" class="date-picker" id="tasks-date-picker">
+          <button class="btn-primary" id="add-task-btn">
+            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            إضافة مهمة
+          </button>
+        </div>
+      </div>
+      <div id="tasks-content"></div>
+    </section>
+
+    <!-- التقويم -->
+    <section class="page" id="page-calendar">
+      <div class="page-header">
+        <div class="page-title-block">
+          <h1 class="page-title">التقويم</h1>
+          <p class="page-subtitle">إنجازاتك اليومية في نظرة واحدة</p>
+        </div>
+      </div>
+      <div id="calendar-content"></div>
+    </section>
+
+    <!-- الإنجازات -->
+    <section class="page" id="page-achievements">
+      <div class="page-header">
+        <div class="page-title-block">
+          <h1 class="page-title">الإنجازات</h1>
+          <p class="page-subtitle">احتفل بمعالمك وانتصاراتك الشخصية</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn-primary" id="add-achievement-btn">
+            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            إضافة إنجاز
+          </button>
+        </div>
+      </div>
+      <div id="achievements-content"></div>
+    </section>
+
+    <!-- المذكرات -->
+    <section class="page" id="page-journal">
+      <div class="page-header">
+        <div class="page-title-block">
+          <h1 class="page-title">المذكرات</h1>
+          <p class="page-subtitle">مساحتك الخاصة للكتابة والتأمل والنمو</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn-primary" id="add-journal-btn">
+            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            تدوينة جديدة
+          </button>
+        </div>
+      </div>
+      <div id="journal-content"></div>
+    </section>
+
+    <!-- الجوانب -->
+    <section class="page" id="page-categories">
+      <div class="page-header">
+        <div class="page-title-block">
+          <h1 class="page-title">الجوانب</h1>
+          <p class="page-subtitle">نظرة عامة على جوانب حياتك</p>
+        </div>
+      </div>
+      <div id="categories-content"></div>
+    </section>
+
+    <!-- التقارير -->
+    <section class="page" id="page-reports">
+      <div class="page-header">
+        <div class="page-title-block">
+          <h1 class="page-title">التقارير</h1>
+          <p class="page-subtitle">التحليلات ومؤشرات التقدم</p>
+        </div>
+        <div class="page-actions"></div>
+      </div>
+      <div id="reports-content"></div>
+    </section>
+
+    <!-- إدارة العادات -->
+    <section class="page" id="page-manage">
+      <div class="page-header">
+        <div class="page-title-block">
+          <h1 class="page-title">إدارة العادات</h1>
+          <p class="page-subtitle">تفعيل وإيقاف عاداتك بسرعة</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn-primary" id="add-habit-btn">
+            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            إضافة عادة
+          </button>
+        </div>
+      </div>
+      <div id="manage-content"></div>
+    </section>
+
+    <section class="page" id="page-onboarding">
+      <div id="onboarding-content"></div>
+    </section>
+
+    <section class="page" id="page-login">
+      <div class="page-header">
+        <div class="page-title-block">
+          <h1 class="page-title">تسجيل الدخول</h1>
+          <p class="page-subtitle">ادخل إلى حسابك لمتابعة تقدمك وربط مزامنتك السحابية لاحقاً.</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn-ghost" data-page="dashboard">العودة إلى لوحة التحكم</button>
+        </div>
+      </div>
+      <div id="login-content"></div>
+    </section>
+
+    <section class="page" id="page-settings">
+      <div class="page-header">
+        <div class="page-title-block">
+          <h1 class="page-title">الإعدادات</h1>
+          <p class="page-subtitle">إدارة الحساب والواجهة والبيانات من مكان واحد.</p>
+        </div>
+      </div>
+      <div id="settings-content"></div>
+    </section>
+
+    <!-- لوحة الإدارة -->
+    <section class="page" id="page-admin">
+      <div class="page-header">
+        <div class="page-title-block">
+          <h1 class="page-title admin-title">
+            <svg viewBox="0 0 22 22" fill="none" width="26" height="26" style="display:inline-block;vertical-align:middle;margin-left:8px"><path d="M11 2l2.5 3.5H18l-2.5 3.5L17 13l-3.5-1.5L10 13l1.5-4L9 5.5h4.5z" stroke="#c4b5fd" stroke-width="1.6" stroke-linejoin="round"/><path d="M11 13.5v5M8 18.5h6" stroke="#c4b5fd" stroke-width="1.6" stroke-linecap="round"/></svg>
+            لوحة الإدارة
+          </h1>
+          <p class="page-subtitle">لوحة التحكم الكاملة بالنظام</p>
+        </div>
+      </div>
+      <div class="admin-tabs-bar" id="admin-tabs-bar"></div>
+      <div id="admin-content"></div>
+    </section>
+
+    <!-- التحديات -->
+    <section class="page" id="page-challenges">
+      <div class="page-header">
+        <div class="page-title-block">
+          <h1 class="page-title">التحديات</h1>
+          <p class="page-subtitle">ابنِ عادات جديدة. اترك العادات السيئة. تابع انضباطك.</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn-primary" id="ch-create-btn">
+            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            تحدي جديد
+          </button>
+        </div>
+      </div>
+      <div id="ch-dashboard"></div>
+      <div class="ch-controls-bar" id="ch-controls-bar"></div>
+      <div id="ch-cards-grid"></div>
+    </section>
+
+    <!-- الخط الزمني -->
+    <section class="page" id="page-timeline">
+      <div class="page-header">
+        <div class="page-title-block">
+          <h1 class="page-title">الخط الزمني</h1>
+          <p class="page-subtitle" id="tl-subtitle">تابع أحداث حياتك عبر خطوط زمنية متعددة</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn-secondary btn-sm" id="tl-new-timeline-btn">
+            <svg viewBox="0 0 24 24" fill="none" width="13" height="13"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            خط زمني جديد
+          </button>
+          <button class="btn-primary" id="tl-add-event-btn">
+            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            إضافة حدث
+          </button>
+        </div>
+      </div>
+      <div class="tl-selector" id="tl-selector"></div>
+      <div class="tl-controls-bar">
+        <input class="tl-search" id="tl-search" placeholder="🔍 بحث في الأحداث…">
+        <div class="tl-cat-filters" id="tl-cat-filters"></div>
+        <div class="tl-zoom-wrap">
+          <button class="tl-zoom-btn" id="tl-zoom-out" title="تصغير">−</button>
+          <span class="tl-zoom-label" id="tl-zoom-label">1×</span>
+          <button class="tl-zoom-btn" id="tl-zoom-in" title="تكبير">+</button>
+        </div>
+      </div>
+      <div class="tl-stats-bar" id="tl-stats-bar"></div>
+      <div id="timeline-visual"></div>
+      <div class="tl-table-wrap" id="tl-table-wrap"></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- شريط التنقل السفلي للجوال -->
+<nav class="mobile-nav" id="mobile-nav">
+  <a class="mob-item active" data-page="dashboard" href="#">
+    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/></svg>
+    <span>الرئيسية</span>
+  </a>
+  <a class="mob-item" data-page="tasks" href="#">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <span>المهام</span>
+  </a>
+  <a class="mob-item" data-page="daily" href="#">
+    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 9h18M8 2v4M16 2v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <span>العادات</span>
+  </a>
+  <a class="mob-item" data-page="journal" href="#">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <span>المذكرات</span>
+  </a>
+  <button class="mob-item mob-more-btn" id="mob-more-btn" type="button">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg>
+    <span>المزيد</span>
+  </button>
+</nav>
+
+<!-- قائمة المزيد للجوال -->
+<div class="mob-more-overlay" id="mob-more-overlay">
+  <div class="mob-more-panel" id="mob-more-panel">
+    <div class="mob-more-header">صفحات أخرى</div>
+    <div class="mob-more-grid">
+      <a class="mob-more-item" data-page="calendar" href="#">
+        <div class="mob-more-icon">📅</div><span>التقويم</span>
+      </a>
+      <a class="mob-more-item" data-page="challenges" href="#">
+        <div class="mob-more-icon">⭐</div><span>التحديات</span>
+      </a>
+      <a class="mob-more-item" data-page="achievements" href="#">
+        <div class="mob-more-icon">🏆</div><span>الإنجازات</span>
+      </a>
+      <a class="mob-more-item" data-page="timeline" href="#">
+        <div class="mob-more-icon">🗓️</div><span>الزمني</span>
+      </a>
+      <a class="mob-more-item" data-page="categories" href="#">
+        <div class="mob-more-icon">🗂️</div><span>الجوانب</span>
+      </a>
+      <a class="mob-more-item" data-page="reports" href="#">
+        <div class="mob-more-icon">📊</div><span>التقارير</span>
+      </a>
+      <a class="mob-more-item" data-page="manage" href="#">
+        <div class="mob-more-icon">⚙️</div><span>إدارة العادات</span>
+      </a>
+      <a class="mob-more-item" data-page="settings" href="#">
+        <div class="mob-more-icon">🛠️</div><span>الإعدادات</span>
+      </a>
+      <a class="mob-more-item" id="mob-auth-item" data-page="login" href="#">
+        <div class="mob-more-icon" id="mob-auth-icon">🔐</div><span id="mob-auth-label">تسجيل الدخول</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- نافذة إضافة/تعديل العادة -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-title">إضافة عادة</h2>
+      <button class="modal-close" id="modal-close" aria-label="إغلاق">
+        <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="habit-edit-id">
+      <div class="form-group">
+        <label class="form-label">اسم العادة</label>
+        <input type="text" class="form-input" id="habit-name-input" placeholder="مثال: التأمل الصباحي" maxlength="60">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الوصف <span style="color:var(--text-3);font-weight:400">(اختياري)</span></label>
+        <input type="text" class="form-input" id="habit-desc-input" placeholder="وصف مختصر..." maxlength="100">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الجانب</label>
+        <select class="form-select" id="habit-category-select"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">نوع العادة</label>
+        <div class="type-selector">
+          <label class="type-option">
+            <input type="radio" name="habit-type" value="boolean" checked>
+            <span class="type-btn">
+              <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              نعم / لا
+            </span>
+          </label>
+          <label class="type-option">
+            <input type="radio" name="habit-type" value="rating">
+            <span class="type-btn">
+              <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="1.8"/></svg>
+              تقييم 1–10
+            </span>
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="toggle-row">
+          <div>
+            <div class="form-label">مفعّل</div>
+            <div class="form-hint">تضمين في التتبع اليومي</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="habit-enabled-toggle" checked>
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" id="modal-cancel">إلغاء</button>
+      <button class="btn-primary" id="modal-save">حفظ العادة</button>
+    </div>
+  </div>
+</div>
+
+<!-- نافذة الجانب -->
+<div class="modal-overlay" id="cat-modal-overlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2 class="modal-title" id="cat-modal-title">إضافة جانب</h2>
+      <button class="modal-close" id="cat-modal-close">
+        <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="cat-edit-id">
+      <div class="form-group">
+        <label class="form-label">اسم الجانب</label>
+        <input type="text" class="form-input" id="cat-name-input" placeholder="مثال: المال والاستثمار" maxlength="40">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الوصف <span style="color:var(--text-3);font-weight:400">(اختياري)</span></label>
+        <input type="text" class="form-input" id="cat-desc-input" placeholder="ما الذي يغطيه هذا الجانب..." maxlength="100">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الأيقونة (إيموجي)</label>
+        <div class="icon-picker-row">
+          <input type="text" class="form-input icon-text-input" id="cat-icon-input" placeholder="💡" maxlength="4">
+          <div class="icon-preset-grid" id="icon-preset-grid">💪 ⚡ 📚 🧠 ❤️ 💰 🙏 🏃 🎯 🎨 🎸 ✈️ 🌱 🔥 💡 🌟 💻 🍎 😴 🏋️ 💧 🧘 🎓 📖 🚀 🎵</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">اللون</label>
+        <div class="color-picker-row">
+          <input type="color" class="color-input-native" id="cat-color-input" value="#4ade80">
+          <div class="color-swatches" id="color-swatches"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="toggle-row">
+          <div>
+            <div class="form-label">مفعّل</div>
+            <div class="form-hint">عرض في صفحات التتبع</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="cat-enabled-toggle" checked>
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" id="cat-modal-cancel">إلغاء</button>
+      <button class="btn-primary" id="cat-modal-save">حفظ الجانب</button>
+    </div>
+  </div>
+</div>
+
+<!-- نافذة التأكيد -->
+<div class="modal-overlay" id="confirm-overlay">
+  <div class="modal-card confirm-card">
+    <div class="confirm-icon" id="confirm-icon">
+      <svg viewBox="0 0 24 24" fill="none" width="28" height="28"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h3 class="confirm-title" id="confirm-title">هل أنت متأكد؟</h3>
+    <p class="confirm-body" id="confirm-body">لا يمكن التراجع عن هذا الإجراء.</p>
+    <div class="confirm-actions">
+      <button class="btn-ghost" id="confirm-cancel">إلغاء</button>
+      <button class="btn-danger" id="confirm-ok">حذف</button>
+    </div>
+  </div>
+</div>
+
+<!-- نافذة حدث الخط الزمني -->
+<div class="modal-overlay" id="tl-modal-overlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2 class="modal-title" id="tl-modal-title">إضافة حدث</h2>
+      <button class="modal-close" id="tl-modal-close">
+        <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="tl-edit-id">
+      <input type="hidden" id="tl-edit-timeline-id">
+      <div class="form-group">
+        <label class="form-label">الخط الزمني</label>
+        <select class="form-select" id="tl-timeline-select"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">اسم الحدث <span style="color:#f87171">*</span></label>
+        <input type="text" class="form-input" id="tl-name-input" placeholder="مثال: بداية مشروع جديد" maxlength="80">
+      </div>
+      <div class="form-group">
+        <label class="form-label">التاريخ <span style="color:#f87171">*</span></label>
+        <input type="date" class="form-input" id="tl-date-input" style="cursor:pointer">
+      </div>
+      <div class="form-group">
+        <label class="form-label">ملاحظات <span style="color:var(--text-3);font-weight:400">(اختياري)</span></label>
+        <textarea class="form-textarea" id="tl-notes-input" rows="3" placeholder="ما الذي حدث؟ تفاصيل وأفكار…" maxlength="500"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">التصنيف</label>
+        <select class="form-select" id="tl-cat-select">
+          <option value="personal">👤 شخصي</option>
+          <option value="work">💼 العمل</option>
+          <option value="health">💪 الصحة</option>
+          <option value="education">📚 التعليم</option>
+          <option value="travel">✈️ السفر</option>
+          <option value="milestone">🏆 معلم مهم</option>
+          <option value="other">📌 أخرى</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">الأيقونة <span style="color:var(--text-3);font-weight:400">(اختياري)</span></label>
+        <div class="icon-picker-row">
+          <input type="text" class="form-input icon-text-input" id="tl-icon-input" placeholder="⭐" maxlength="4">
+          <div class="icon-preset-grid" id="tl-icon-grid"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="toggle-row">
+          <div>
+            <div class="form-label">⭐ مهم / معلم بارز</div>
+            <div class="form-hint">تمييزه بنجمة وتأثير خاص</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="tl-important-toggle">
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" id="tl-modal-cancel">إلغاء</button>
+      <button class="btn-primary" id="tl-modal-save">حفظ الحدث</button>
+    </div>
+  </div>
+</div>
+
+<!-- نافذة إدارة الخط الزمني -->
+<div class="modal-overlay" id="tlm-modal-overlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2 class="modal-title" id="tlm-modal-title">خط زمني جديد</h2>
+      <button class="modal-close" id="tlm-modal-close">
+        <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="tlm-edit-id">
+      <div class="form-group">
+        <label class="form-label">اسم الخط الزمني <span style="color:#f87171">*</span></label>
+        <input type="text" class="form-input" id="tlm-name-input" placeholder="مثال: المسيرة المهنية" maxlength="50">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الوصف <span style="color:var(--text-3);font-weight:400">(اختياري)</span></label>
+        <input type="text" class="form-input" id="tlm-desc-input" placeholder="ماذا يتتبع هذا الخط؟" maxlength="100">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الأيقونة</label>
+        <div class="icon-picker-row">
+          <input type="text" class="form-input icon-text-input" id="tlm-icon-input" placeholder="🗓️" maxlength="4">
+          <div class="icon-preset-grid" id="tlm-icon-grid"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">اللون</label>
+        <div class="color-picker-row">
+          <input type="color" class="color-input-native" id="tlm-color-input" value="#a78bfa">
+          <div class="color-swatches" id="tlm-swatches"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" id="tlm-modal-cancel">إلغاء</button>
+      <button class="btn-primary" id="tlm-modal-save">حفظ الخط الزمني</button>
+    </div>
+  </div>
+</div>
+
+<div class="tl-tooltip-card" id="tl-tooltip" style="display:none"></div>
+<div class="toast" id="toast"></div>
+
+<!-- نافذة إنشاء/تعديل تحدي -->
+<div class="modal-overlay" id="ch-modal-overlay">
+  <div class="modal-card ch-modal-card">
+    <div class="modal-header">
+      <h2 class="modal-title" id="ch-modal-title">تحدي جديد</h2>
+      <button class="modal-close" id="ch-modal-close">
+        <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="ch-edit-id">
+      <div class="form-group">
+        <label class="form-label">اسم التحدي <span style="color:#f87171">*</span></label>
+        <input type="text" class="form-input" id="ch-modal-name" placeholder="مثال: 30 يوم قراءة" maxlength="80">
+      </div>
+      <div class="form-group">
+        <label class="form-label">نوع التحدي</label>
+        <div class="ch-type-selector">
+          <label class="ch-type-option">
+            <input type="radio" name="ch-type" value="build" checked>
+            <span class="ch-type-btn ch-type-build">
+              <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              تحدي بناء عادة
+            </span>
+          </label>
+          <label class="ch-type-option">
+            <input type="radio" name="ch-type" value="quit">
+            <span class="ch-type-btn ch-type-quit">
+              <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+              تحدي ترك عادة
+            </span>
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">المدة</label>
+        <div class="ch-duration-row">
+          <button type="button" class="ch-dur-btn active" data-ch-dur="30">30 يوم</button>
+          <button type="button" class="ch-dur-btn" data-ch-dur="7">7 أيام</button>
+          <button type="button" class="ch-dur-btn" data-ch-dur="21">21 يوم</button>
+          <button type="button" class="ch-dur-btn" data-ch-dur="60">60 يوم</button>
+          <button type="button" class="ch-dur-btn" data-ch-dur="90">90 يوم</button>
+          <button type="button" class="ch-dur-btn" data-ch-dur="custom">مخصص</button>
+        </div>
+        <input type="number" class="form-input ch-custom-days" id="ch-modal-custom-days" placeholder="عدد الأيام (1–365)" min="1" max="365" style="display:none;margin-top:10px">
+      </div>
+      <div class="form-group">
+        <label class="form-label">تاريخ البداية</label>
+        <input type="date" class="form-input" id="ch-modal-start">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الوصف / السبب الشخصي <span style="color:var(--text-3);font-weight:400">(اختياري)</span></label>
+        <textarea class="form-textarea" id="ch-modal-desc" rows="3" placeholder="لماذا تأخذ هذا التحدي؟ ما هو دافعك؟" maxlength="300"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">لون التحدي</label>
+        <div class="color-picker-row">
+          <input type="color" class="color-input-native" id="ch-modal-color-native" value="#8b5cf6">
+          <div class="color-swatches" id="ch-modal-color-swatches"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">أيقونة التحدي</label>
+        <div class="icon-picker-row">
+          <input type="text" class="form-input icon-text-input" id="ch-modal-icon-input" placeholder="🏆" maxlength="4">
+          <div class="icon-preset-grid" id="ch-modal-icon-grid"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="toggle-row">
+          <div>
+            <div class="form-label">⚡ الوضع الصارم</div>
+            <div class="form-hint">يوم واحد فائت يُنهي التحدي فوراً</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="ch-modal-strict">
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" id="ch-modal-cancel">إلغاء</button>
+      <button class="btn-primary" id="ch-modal-save">حفظ التحدي</button>
+    </div>
+  </div>
+</div>
+
+<!-- نافذة تفاصيل التحدي -->
+<div class="modal-overlay ch-details-overlay" id="ch-details-overlay">
+  <div class="ch-details-card" id="ch-details-card"></div>
+</div>
+
+<!-- نافذة المهمة -->
+<div class="modal-overlay" id="task-modal-overlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2 class="modal-title" id="task-modal-title">إضافة مهمة</h2>
+      <button class="modal-close" id="task-modal-close">
+        <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="task-edit-id">
+      <div class="form-group">
+        <label class="form-label">عنوان المهمة <span style="color:#f87171">*</span></label>
+        <input type="text" class="form-input" id="task-title-input" placeholder="مثال: الركض الصباحي" maxlength="80">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الوصف <span style="color:var(--text-3);font-weight:400">(اختياري)</span></label>
+        <input type="text" class="form-input" id="task-desc-input" placeholder="وصف مختصر..." maxlength="200">
+      </div>
+      <div class="form-group">
+        <label class="form-label">التاريخ</label>
+        <input type="date" class="form-input" id="task-date-input">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الوقت <span style="color:var(--text-3);font-weight:400">(اختياري)</span></label>
+        <input type="time" class="form-input" id="task-time-input">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الأولوية</label>
+        <div class="type-selector" style="grid-template-columns:repeat(3,1fr)">
+          <label class="type-option">
+            <input type="radio" name="task-priority" value="low">
+            <span class="type-btn" style="font-size:12px">🟢 منخفضة</span>
+          </label>
+          <label class="type-option">
+            <input type="radio" name="task-priority" value="medium" checked>
+            <span class="type-btn" style="font-size:12px">🟡 متوسطة</span>
+          </label>
+          <label class="type-option">
+            <input type="radio" name="task-priority" value="high">
+            <span class="type-btn" style="font-size:12px">🔴 عالية</span>
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">التصنيف <span style="color:var(--text-3);font-weight:400">(اختياري)</span></label>
+        <input type="text" class="form-input" id="task-category-input" placeholder="مثال: الصحة، العمل، شخصي..." maxlength="40">
+      </div>
+      <div class="form-group">
+        <label class="form-label">التكرار</label>
+        <select class="form-select" id="task-repeat-input">
+          <option value="none">بدون تكرار</option>
+          <option value="daily">يومي</option>
+          <option value="weekly">أسبوعي</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" id="task-modal-cancel">إلغاء</button>
+      <button class="btn-primary" id="task-modal-save">حفظ المهمة</button>
+    </div>
+  </div>
+</div>
+
+<!-- نافذة المذكرات -->
+<div class="modal-overlay journal-modal-overlay" id="journal-modal-overlay">
+  <div class="modal-card journal-modal-card">
+    <div class="modal-header">
+      <h2 class="modal-title" id="journal-modal-title">تدوينة جديدة</h2>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="journal-word-count" id="journal-word-count">0 كلمة</span>
+        <button class="modal-close" id="journal-modal-close">
+          <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="modal-body journal-modal-body">
+      <input type="hidden" id="journal-edit-id">
+      <div class="form-group">
+        <label class="form-label">التاريخ</label>
+        <input type="date" class="form-input" id="journal-date-input">
+      </div>
+      <div class="form-group">
+        <label class="form-label">العنوان</label>
+        <input type="text" class="form-input" id="journal-title-input" placeholder="عنوان لهذه التدوينة..." maxlength="100">
+      </div>
+      <div class="form-group">
+        <label class="form-label">المزاج</label>
+        <div class="mood-selector" id="mood-selector">
+          <button type="button" class="mood-btn" data-mood="amazing">🌟 رائع</button>
+          <button type="button" class="mood-btn" data-mood="good">😊 جيد</button>
+          <button type="button" class="mood-btn" data-mood="okay">😐 عادي</button>
+          <button type="button" class="mood-btn" data-mood="hard">😔 صعب</button>
+          <button type="button" class="mood-btn" data-mood="rough">😤 قاسٍ</button>
+        </div>
+        <input type="hidden" id="journal-mood-input" value="">
+      </div>
+      <div class="form-group">
+        <label class="form-label">أفكارك</label>
+        <textarea class="form-textarea journal-body-textarea" id="journal-body-input" rows="10" placeholder="اكتب بحرية… هذه مساحتك. لا قواعد ولا أحكام. فقط أنت وأفكارك."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">الوسوم <span style="color:var(--text-3);font-weight:400">(مفصولة بفواصل)</span></label>
+        <input type="text" class="form-input" id="journal-tags-input" placeholder="امتنان، نمو، تأمل..." maxlength="200">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span class="journal-save-hint" id="journal-save-hint"></span>
+      <button class="btn-ghost" id="journal-modal-cancel">إلغاء</button>
+      <button class="btn-primary" id="journal-modal-save">حفظ التدوينة</button>
+    </div>
+  </div>
+</div>
+
+<!-- نافذة الإنجاز -->
+<div class="modal-overlay" id="ach-modal-overlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2 class="modal-title" id="ach-modal-title">إضافة إنجاز</h2>
+      <button class="modal-close" id="ach-modal-close">
+        <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="ach-edit-id">
+      <div class="form-group">
+        <label class="form-label">عنوان الإنجاز <span style="color:#f87171">*</span></label>
+        <input type="text" class="form-input" id="ach-title-input" placeholder="مثال: أكملت أول 5 كيلومتر" maxlength="80">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الوصف <span style="color:var(--text-3);font-weight:400">(اختياري)</span></label>
+        <textarea class="form-textarea" id="ach-desc-input" rows="2" placeholder="احكِ قصة هذا الإنجاز..." maxlength="300"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">التاريخ</label>
+        <input type="date" class="form-input" id="ach-date-input">
+      </div>
+      <div class="form-group">
+        <label class="form-label">التصنيف</label>
+        <select class="form-select" id="ach-category-input">
+          <option value="health">💪 الصحة واللياقة</option>
+          <option value="work">💼 العمل والمسيرة</option>
+          <option value="learning">📚 التعلم والنمو</option>
+          <option value="personal">👤 شخصي</option>
+          <option value="relationships">❤️ العلاقات</option>
+          <option value="financial">💰 المالية</option>
+          <option value="challenge">🏆 تحدٍّ</option>
+          <option value="other">📌 أخرى</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">الأهمية</label>
+        <div class="type-selector" style="grid-template-columns:repeat(3,1fr)">
+          <label class="type-option">
+            <input type="radio" name="ach-importance" value="normal" checked>
+            <span class="type-btn" style="font-size:12px">⭐ عادي</span>
+          </label>
+          <label class="type-option">
+            <input type="radio" name="ach-importance" value="major">
+            <span class="type-btn" style="font-size:12px">🌟 مهم</span>
+          </label>
+          <label class="type-option">
+            <input type="radio" name="ach-importance" value="legendary">
+            <span class="type-btn" style="font-size:12px">🔥 أسطوري</span>
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">الأيقونة</label>
+        <div class="icon-picker-row">
+          <input type="text" class="form-input icon-text-input" id="ach-icon-input" placeholder="🏆" maxlength="4">
+          <div class="icon-preset-grid" id="ach-icon-grid"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">اللون</label>
+        <div class="color-picker-row">
+          <input type="color" class="color-input-native" id="ach-color-input" value="#fbbf24">
+          <div class="color-swatches" id="ach-color-swatches"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" id="ach-modal-cancel">إلغاء</button>
+      <button class="btn-primary" id="ach-modal-save">حفظ الإنجاز</button>
+    </div>
+  </div>
+</div>
+
+<!-- نافذة تفاصيل يوم التقويم -->
+<div class="modal-overlay" id="cal-day-overlay">
+  <div class="modal-card cal-day-card" id="cal-day-card"></div>
+</div>
+
+<script type="module" src="firebase-config.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
